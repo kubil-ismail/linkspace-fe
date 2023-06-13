@@ -1,8 +1,7 @@
 import axios from "axios";
 import rateLimit from "axios-rate-limit";
-import Swal from "sweetalert2";
 
-const http = rateLimit(axios.create(), {
+const http = rateLimit(axios.create({ baseURL: "http://localhost:3200/v1" }), {
   maxRequests: 2,
   perMilliseconds: 1000,
   maxRPS: 2,
@@ -22,21 +21,8 @@ http.interceptors.response.use(
     if (error.response !== undefined) {
       if (error.response.status === 401) {
         // if auth not falid remove token
-        localStorage.removeItem("token");
-        delete http.defaults.headers.common.Authorization;
-        // redirect to logout pages
-        window.location.href = "/logout";
       } else {
-        const errMsg = error.response?.data?.messages;
 
-        Swal.fire({
-          title: "",
-          html: errMsg ?? "Something wrong with our system...",
-          icon: "error",
-          timer: 2000,
-          showCancelButton: false,
-          showConfirmButton: false,
-        });
       }
     }
     return Promise.reject(error);

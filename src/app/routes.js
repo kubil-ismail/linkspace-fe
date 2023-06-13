@@ -13,9 +13,29 @@ const Routes = [
    ---------------------------------------------
   */
   {
-    path: "/example",
-    component: lazy(() => import("pages/Example")),
-    name: "Example",
+    path: "/login",
+    component: lazy(() => import("pages/Login")),
+    name: "Login",
+  },
+  {
+    path: "/register",
+    component: lazy(() => import("pages/Register")),
+    name: "Register",
+  },
+  {
+    path: "/profile",
+    component: lazy(() => import("pages/Profile")),
+    name: "Profile",
+  },
+  {
+    path: "/manage/:id",
+    component: lazy(() => import("pages/Edit")),
+    name: "Manage",
+  },
+  {
+    path: "/manage",
+    component: lazy(() => import("pages/Manage")),
+    name: "Manage",
   },
   /*
     ---------------------------------------------

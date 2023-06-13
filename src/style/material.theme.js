@@ -76,9 +76,7 @@ const mainTheme = createTheme({
         size: "small",
       },
       styleOverrides: {
-        outlinedPrimary: {
-          fontSize: "11px",
-        },
+        
       },
     },
   },
