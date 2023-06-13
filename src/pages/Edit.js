@@ -35,7 +35,7 @@ function Edit() {
       title: "",
     },
   ]);
-  const [socmed, socmedList] = React.useState({
+  const [socmed, setSocmed] = React.useState({
     github: "",
     youtube: "",
     linkedin: "",
@@ -45,34 +45,38 @@ function Edit() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-
-    const bodyFormData = new FormData();
-    bodyFormData.append("title", title);
-    bodyFormData.append("desc", desc);
-    bodyFormData.append("background", background);
-    bodyFormData.append("link", JSON.stringify(link));
-    bodyFormData.append("social_media", JSON.stringify(socmed));
-    bodyFormData.append("photo_profile", picture);
+    
+    const id = location.pathname.split("/")[2];
 
     http
-      .post("/space", bodyFormData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      .put(`/space/${id}`, {
+        title,
+        desc,
+        background,
+        link: JSON.stringify(link),
+        social_media: JSON.stringify(socmed),
       })
       .then(() => {
         Swal.fire({
-          title: "Add space success",
+          title: "Edit space success",
           icon: "success",
           timer: 2000,
           showCancelButton: false,
           showConfirmButton: false,
-        }).then(() => {
-          navigate("/profile");
         });
       })
       .finally(() => setIsLoading(false));
   };
+
+  React.useEffect(() => {
+    if(!localStorage.getItem("token")) {
+      navigate('/login');
+    }
+
+    if (!localStorage.getItem("profile")) {
+      navigate("/login");
+    }
+  }, []);
 
   React.useEffect(() => {
     const id = location.pathname.split("/")[2];
@@ -98,10 +102,10 @@ function Edit() {
       setBackground(response.background);
       setPicture(response.photo_profile);
 
-      socmedList(JSON.parse(response.social_media));
+      setSocmed(JSON.parse(response.social_media));
       setLink(JSON.parse(response.link));
     });
-  }, [location]);
+  }, []);
 
   return (
     <>
@@ -197,11 +201,13 @@ function Edit() {
                         variant="outlined"
                         fullWidth
                         margin="dense"
-                        value={socmedList.youtube}
+                        value={socmed.youtube}
                         onChange={(e) => {
-                          socmedList({
-                            ...socmedList,
-                            ...{ youtube: e.target.value },
+                          setSocmed({
+                            github: socmed.github,
+                            youtube: e.target.value,
+                            linkedin: socmed.linkedin,
+                            instagram: socmed.instagram,
                           });
                         }}
                         InputProps={{
@@ -218,11 +224,13 @@ function Edit() {
                         variant="outlined"
                         fullWidth
                         margin="dense"
-                        value={socmedList.instagram}
+                        value={socmed.instagram}
                         onChange={(e) => {
-                          socmedList({
-                            ...socmedList,
-                            ...{ instagram: e.target.value },
+                          setSocmed({
+                            github: socmed.github,
+                            youtube: socmed.youtube,
+                            linkedin: socmed.linkedin,
+                            instagram: e.target.value,
                           });
                         }}
                         InputProps={{
@@ -239,11 +247,13 @@ function Edit() {
                         variant="outlined"
                         fullWidth
                         margin="dense"
-                        value={socmedList.linkedin}
+                        value={socmed.linkedin}
                         onChange={(e) => {
-                          socmedList({
-                            ...socmedList,
-                            ...{ linkedin: e.target.value },
+                          setSocmed({
+                            github: socmed.github,
+                            youtube: socmed.youtube,
+                            linkedin: e.target.value,
+                            instagram: socmed.instagram,
                           });
                         }}
                         InputProps={{
@@ -260,11 +270,13 @@ function Edit() {
                         variant="outlined"
                         fullWidth
                         margin="dense"
-                        value={socmedList.github}
+                        value={socmed.github}
                         onChange={(e) => {
-                          socmedList({
-                            ...socmedList,
-                            ...{ github: e.target.value },
+                          setSocmed({
+                            github: e.target.value,
+                            youtube: socmed.youtube,
+                            linkedin: socmed.linkedin,
+                            instagram: socmed.instagram,
                           });
                         }}
                         InputProps={{
@@ -366,7 +378,6 @@ function Edit() {
 
                 <Button
                   fullWidth
-                  variant="outlined"
                   size="large"
                   sx={{ mt: 1 }}
                   onClick={() => navigate("/profile")}

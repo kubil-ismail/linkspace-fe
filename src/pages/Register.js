@@ -27,7 +27,7 @@ function Register() {
     http
       .post("/auth/register", { fullname, email, password })
       .then(() => {
-        navigate("/");
+        navigate("/login");
       })
       .catch((result) => {
         const { email, fullname, password } = result?.response?.data?.messages;

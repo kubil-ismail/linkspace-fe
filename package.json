@@ -39,7 +39,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "analyze": "yarn run build && source-map-explorer 'build/static/js/*.js'"
+    "analyze": "yarn run build && source-map-explorer 'build/static/js/*.js'",
+    "legacy": "set NODE_OPTIONS=--openssl-legacy-provider"
   },
   "eslintConfig": {
     "extends": [

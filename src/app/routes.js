@@ -28,6 +28,11 @@ const Routes = [
     name: "Profile",
   },
   {
+    path: "/site/:id",
+    component: lazy(() => import("pages/Site")),
+    name: "Site",
+  },
+  {
     path: "/manage/:id",
     component: lazy(() => import("pages/Edit")),
     name: "Manage",

@@ -25,6 +25,16 @@ function Profile() {
     });
   }, []);
 
+  React.useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    }
+
+    if (!localStorage.getItem("profile")) {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <>
       <Box>
@@ -51,6 +61,20 @@ function Profile() {
                   List Space
                 </Typography>
 
+                {spaceList.length === 0 ? (
+                  <>
+                    <Box display="flex" justifyContent="center">
+                      <Box
+                        component="img"
+                        src="/vector/not_found.svg"
+                        width={200}
+                      />
+                    </Box>
+
+                    <Typography align="center">Add new space here</Typography>
+                  </>
+                ) : null}
+
                 <List
                   component="nav"
                   sx={{ maxHeight: "50vh", overflowY: "auto" }}
@@ -58,7 +82,7 @@ function Profile() {
                   {spaceList?.map((item) => (
                     <ListItemButton
                       onClick={() => {
-                        navigate(`/manage/${item?.slug}`);
+                        navigate(`/site/${item?.slug}`);
                       }}
                     >
                       <ListItemText

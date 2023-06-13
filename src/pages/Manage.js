@@ -73,7 +73,15 @@ function Edit() {
       .finally(() => setIsLoading(false));
   };
 
-  console.log("socmed", socmed);
+  React.useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    }
+
+    if (!localStorage.getItem("profile")) {
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <>
